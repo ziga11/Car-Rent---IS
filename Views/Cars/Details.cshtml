@@ -1,0 +1,53 @@
+@model web.Models.Car
+@inject SignInManager<User> SignInManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<h3>To create a booking you need to register</h3>
+<div style="display: flex; align-items: center;">
+    <div style="flex: 1;">
+        <h4>Car</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Make)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Make)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Model)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Model)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Color)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Color)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DailyRate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DailyRate)
+            </dd>
+        </dl>
+    </div>
+    <div style="flex: 1;">
+        <img src="@Model.imageURL" class="img-fluid">
+    </div>
+</div>
+<div>
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Staff")) {
+        <a asp-action="Edit" asp-route-id="@Model?.CarID">Edit</a>
+    }
+    @if (SignInManager.IsSignedIn(User)) {
+        <a asp-controller="Bookings" asp-action="Create" asp-route-CarID="@Model.CarID" asp-route-UserID="@SignInManager.UserManager.GetUserId(User)">Create Booking</a>
+    }
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>

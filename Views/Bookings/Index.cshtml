@@ -1,0 +1,55 @@
+@model IEnumerable<web.Models.Booking>
+@inject SignInManager<User> SignInManager
+@using Microsoft.AspNetCore.Identity
+@if (!SignInManager.IsSignedIn(User)) {
+    <script>
+        window.location.href = '@Url.Action("Index", "Home")';
+    </script>
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.startDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.endDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car.Make)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car.Model)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.startDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.endDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.Make)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.Model)
+            </td>
+            <td>
+                @if (User.IsInRole("Staff")) {
+                    <a asp-action="Edit" asp-route-id="@item.BookingID">Edit</a>
+                }                
+                <a asp-action="Details" asp-route-id="@item.BookingID">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.BookingID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

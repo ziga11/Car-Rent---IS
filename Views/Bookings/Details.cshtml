@@ -1,0 +1,60 @@
+@model web.Models.Booking
+@inject SignInManager<User> SignInManager
+@using Microsoft.AspNetCore.Identity
+
+@if (!SignInManager.IsSignedIn(User)) {
+    <script>
+        window.location.href = '@Url.Action("Index", "Home")';
+    </script>
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<div style="display: flex; align-items: center;">
+    <div style="flex: 1;">
+        <h4>Booking</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Car.Make)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Car.Make)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Car.Model)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Car.Model)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.startDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.startDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.endDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.endDate)
+            </dd>
+            <dt class = "col-sm-2">
+                Pay Amount
+            </dt>
+            <dd class = "col-sm-10">
+                @{ var payAmount = Model.endDate.Subtract(Model.startDate).Days * Model.Car.DailyRate; }
+                @payAmount
+            </dd>
+        </dl>
+        <div style="flex: 1;">
+            <img src="@Model.Car.imageURL" class="img-fluid">
+        </div>
+    </div>
+</div>
+<div>
+    @if (!User.IsInRole("Staff")) {
+        <a asp-action="Edit" asp-route-id="@Model?.BookingID">Edit</a>
+    }
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>

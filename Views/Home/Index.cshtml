@@ -1,0 +1,23 @@
+﻿@model IEnumerable<web.Models.Car>
+@{
+    ViewData["Title"] = "Home Page";
+    Dictionary<string, bool> myDictionary = new Dictionary<string, bool>();
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="row">
+            @foreach (var car in Model) {
+                if (myDictionary.ContainsKey(car.imageURL)) {
+                    continue;
+                }
+                <div class="col-md-4 mb-4">
+                    <a href="@Url.Action("Details", "Cars", new { id = car.CarID })">
+                        <img src="@car.imageURL" alt="@car.Model" class="img-fluid car-image">
+                    </a>
+                </div>
+                myDictionary[car.imageURL] = true;
+            }
+        </div>
+    </main>
+</div>
